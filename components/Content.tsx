@@ -92,6 +92,7 @@ export default function Content({questionId, data}: ContentProps) {
 
   const checkAnswer = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
     let correct = true;
     const res = Object.entries(solutions).reduce((acc, [key, value]) => {
       if (formData[key] === value) {
@@ -105,12 +106,11 @@ export default function Content({questionId, data}: ContentProps) {
 
     setErrors(res);
     if (correct) {
-      setLoading(true);
       const questionData = new FormData();
       questionData.append("questionId", questionId);
       await postSubmission(questionData); 
-      setLoading(false);
     }
+    setLoading(false);
     setSubmission(correct);
   }
 

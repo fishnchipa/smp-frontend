@@ -1,17 +1,13 @@
 import React from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import { getUser } from "@/lib/data/user";
+import CompositionWrapper from "./CompositionWrapper";
 
-export default function Composition({children}: {children: React.ReactNode}) {
-
+export default async function Composition({children}: {children: React.ReactNode}) {
+  const data = await getUser();
 
   return (
-    <div className="flex min-w-[100vw] min-h-[100vh]">
-      <Sidebar />
-      <div className="w-full h-screen flex flex-col">
-        <Header />
-        {children}
-      </div>
-    </div>
+    <CompositionWrapper data={data}>{children}</CompositionWrapper>
   )
 }

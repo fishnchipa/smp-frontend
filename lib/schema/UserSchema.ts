@@ -8,6 +8,8 @@ const userSchema = z.object({
   role: z.string(),
 })
 
+export type UserType = z.infer<typeof userSchema>
+
 export function getUserSchema() {
   return userSchema;
 }

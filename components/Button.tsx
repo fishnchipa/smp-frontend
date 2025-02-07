@@ -1,36 +1,44 @@
-"use client"
-
-import { parseRoute } from "@/lib/utils";
-import { usePathname, useRouter } from "next/navigation";
-
+import { cn } from "@/lib/utils";
+import React from "react";
+import Spinner from "./Spinner";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  label: string, 
-  route: string,
+  label: string;
+  loading?: boolean;
+  className?: string;
+  spanClassName?: string;
 }
 
 export default function Button({
-  label, 
-  route,
-  children,
+  label,
+  className,
+  spanClassName,
+  loading,
   ...props
 }: ButtonProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const active = parseRoute(route) === parseRoute(pathname);
-  const enabled = "border border-white rounded-md bg-aqua"
-  const disabled = "border border-transparent text-murky hover:text-white"
-
   return (
-    <button 
-      className={ active ? enabled : disabled } 
-      onClick={() => router.push(route)}
+    <button
+      className={cn(
+        "w-full h-12 text-[18px] relative group overflow-hidden border-2 border-black hover:text-white",
+        className,
+      )}
+      disabled={loading}
       {...props}
     >
-      <div className="h-12 w-full flex items-center gap-x-2 px-4 ">
-        {children}
-        <span>{label}</span>
-      </div>
+      <span
+        className={cn(
+          `absolute inset-0 bg-black transform -translate-x-[calc(100%+1px)] ${loading ? "translate-x-0" : "group-hover:translate-x-0"} transition-transform duration-700 ease-in-out`,
+          spanClassName,
+        )}
+      ></span>
+      {loading ? (
+        <div className="w-full h-full flex justify-center items-center">
+          <Spinner bg="#494949" />
+        </div>
+      ) : (
+        <span className="relative">{label}</span>
+      )}
     </button>
-  )
+  );
 }
+

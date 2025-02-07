@@ -1,12 +1,18 @@
+
 import { Atom, CircleHelp, Cog, LogOut, PackagePlus, Plus, ScanSearch, SquarePen } from "lucide-react";
 import Image from "next/image";
-import Button from "./Button";
 import Setbar from "./Setbar";
-import { getUser } from "@/lib/data/user";
 import Link from "next/link";
+import NavLink from "./NavLink";
+import { UserType } from "@/lib/schema/UserSchema";
+import { logout } from "@/app/action";
 
-export default async function Sidebar() {
-  const data = await getUser();
+type SidebarProps = {
+  data: UserType 
+}
+
+export default function Sidebar({data}: SidebarProps) {
+
   return (
     <div className="flex flex-col justify-between h-screen min-w-72 max-w-72 bg-royal text-white">
       <div>
@@ -36,31 +42,31 @@ export default async function Sidebar() {
         <div className="px-4 py-8">
           <h2 className="font-semibold py-2">Main Menu</h2>
           <nav className="flex flex-col gap-y-2 text-sm">
-            <Button 
+            <NavLink 
               label="My Progress" 
               route="/"
             >
               <Atom size={24}/>
-            </Button>
-            <Button 
+            </NavLink>
+            <NavLink 
               label="Explore Questions" 
               route="/problem-list"
             >
               <ScanSearch size={24} />
-            </Button>
-            <Button 
+            </NavLink>
+            <NavLink 
               label="Module Notes" 
               route="/module-notes"
             >
               <SquarePen size={24} />
-            </Button>
+            </NavLink>
             {data.role === "ADMIN" && 
-              <Button 
+              <NavLink 
                 label="Add Question" 
                 route="/add-question"
               >
                 <PackagePlus size={24} />
-              </Button>
+              </NavLink>
             }
           </nav>
         </div>
@@ -90,7 +96,7 @@ export default async function Sidebar() {
               <span>Ask For Help</span>
             </div>
           </button> 
-          <button className="text-murky hover:text-white">
+          <button className="text-murky hover:text-white" onClick={logout}>
             <div className="h-12 w-full flex items-center gap-x-2 px-4">
               <LogOut size={20}/>
               <span>Account Logout</span>

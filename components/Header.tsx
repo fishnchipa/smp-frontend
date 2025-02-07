@@ -1,12 +1,17 @@
 import { Bell, Menu } from "lucide-react";
+import { Dispatch, SetStateAction } from "react";
 
-export default function Header() {
+type HeaderProps = {
+  setActive: Dispatch<SetStateAction<boolean>>
+}
+
+export default function Header({setActive}: HeaderProps) {
 
 
   return (
     <header className="flex items-center justify-between bg-white h-16 px-5 border-b py-4">
       <div className="h-full flex items-center gap-x-5">
-        <button>
+        <button onClick={() => setActive(prev => !prev)}>
           <Menu size={32} strokeWidth={1}/> 
         </button>
         <input 

@@ -101,7 +101,7 @@ export const questionColumns: ColumnDef<QuestionType>[] = [
                       </DialogDescription>
                     </DialogHeader>
                     <div>
-                      hi
+                      Sets not implemented Yet : | 
                     </div>
                     <DialogFooter>
                       
