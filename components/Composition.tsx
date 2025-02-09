@@ -1,6 +1,4 @@
 import React from "react";
-import Sidebar from "./Sidebar";
-import Header from "./Header";
 import { getUser } from "@/lib/data/user";
 import CompositionWrapper from "./CompositionWrapper";
 
