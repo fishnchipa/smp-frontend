@@ -19,7 +19,7 @@ export async function signUp(initial: InitialType, formData: FormData) {
   console.log(initial);
   delete data.match;
 
-  const response = await fetch(process.env.API_ENDPOINT + "api/v1/auth/register", {
+  const response = await fetch(process.env.API_ENDPOINT + "auth/register", {
     method: "POST",
     headers: {
     "Content-Type": "application/json",

@@ -10,7 +10,7 @@ type InitialType = {
 export async function signIn(initial: InitialType, formData: FormData) {
   const data = Object.fromEntries(formData);
 
-  const response = await fetch(process.env.API_ENDPOINT + "api/v1/auth/authenticate", {
+  const response = await fetch(process.env.API_ENDPOINT + "auth/authenticate", {
     method: "POST",
     headers: {
     "Content-Type": "application/json",
