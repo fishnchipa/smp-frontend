@@ -10,7 +10,7 @@ export async function validatedWithUserGet<S extends z.ZodTypeAny>(
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get("session"); 
   if (sessionCookie) {
-    const response = await fetch(process.env.API_ENDPOINT + api, {
+    const response = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + api, {
       headers: {
         "Authorization": "Bearer " + sessionCookie.value 
       }
@@ -38,7 +38,7 @@ export async function validatedWithUserPost(
   const sessionCookie = cookieStore.get("session"); 
   
   if (sessionCookie) {
-    const response = await fetch(process.env.API_ENDPOINT + api, {
+    const response = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + api, {
       method: "POST",
       headers: {
         "Authorization": "Bearer " + sessionCookie.value,
