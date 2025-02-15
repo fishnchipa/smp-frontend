@@ -7,7 +7,7 @@ export async function fetchAction<S extends z.ZodType>(
   sessionCookie: RequestCookie | undefined
 ): Promise<z.infer<S> | undefined> {
   if (sessionCookie) {
-    const response = await fetch("http://localhost:8080/api/v1/" + api, {
+    const response = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + api, {
       headers: {
         "Authorization": "Bearer " + sessionCookie.value 
       }
@@ -30,7 +30,7 @@ export async function postAction(
   body: object 
 ) {
   if (sessionCookie) {
-    const response = await fetch("http://localhost:8080/api/v1/" + api, {
+    const response = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT  + api, {
       headers: {
         "Authorization": "Bearer " + sessionCookie.value,
         "Content-Type": "application/json"
