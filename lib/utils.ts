@@ -58,3 +58,54 @@ export const fileToDataUrl = async (file: File) => {
   return dataUrlPromise;
 }
 
+
+export function debounce<T extends (...args: unknown[]) => void>(func: T, delay: number) {
+  let timer: NodeJS.Timeout;
+  return (...args: Parameters<T>) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(...args), delay);
+  };
+}
+
+
+export function getSearchParams(
+  modules?: string | string[], 
+  tags?: string | string[], 
+  difficulty?: string | string[],
+  query?: string | string[],
+) {
+  const queryString = new URLSearchParams();
+  if (modules) {
+    if (Array.isArray(modules)) {
+      queryString.set("modules", modules.map(x => paramsParse(x)).join(","));
+    } else {
+      queryString.set("modules", paramsParse(modules));
+    }
+  }
+
+  if (tags) {
+    if (Array.isArray(tags)) {
+      queryString.set("tags", tags.join(","));
+    } else {
+      queryString.set("tags", tags);
+    }
+  }
+
+  if (difficulty) {
+    if (Array.isArray(difficulty)) {
+      queryString.set("difficulty", difficulty.join(",").toUpperCase()) ;
+    } else {
+      queryString.set("difficulty", difficulty.toUpperCase()) ;
+    }
+  }
+
+  if (query) {
+    if (!Array.isArray(query)) {
+      queryString.set("query", query);
+    }
+  }
+
+  return queryString; 
+}
+
+

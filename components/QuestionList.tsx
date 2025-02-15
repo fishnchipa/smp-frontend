@@ -3,12 +3,17 @@ import { Shuffle } from "lucide-react";
 import { DataTable } from "./DataTable/DataTable";
 import { questionColumns } from "./DataTable/Columns";
 import { QuestionType } from "@/lib/schema/QuestionSchema";
+import Pagination from "./Pagination";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
 type QuestionListProps = {
-  data: QuestionType[]
+  data: QuestionType[],
+  session: RequestCookie
 }
 
-export default async function QuestionList({data}: QuestionListProps) {
+
+export default function QuestionList({data, session}: QuestionListProps) {
+  
 
   return (
     <div className="w-full">
@@ -25,8 +30,9 @@ export default async function QuestionList({data}: QuestionListProps) {
         </button>
       </div>
       <div className="bg-white mt-2">
-        {data && <DataTable columns={questionColumns} data={data}/>}
+        {data && <DataTable columns={questionColumns("/question", session)} data={data}/>}
       </div>
+      <Pagination />
     </div>
 
   )

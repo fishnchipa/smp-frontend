@@ -15,9 +15,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies"
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
+  columns: ColumnDef<TData, TValue>[] | ((session?: RequestCookie) => (ColumnDef<TData, TValue>[]))
   data: TData[]
 }
 
@@ -27,12 +28,12 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
-    columns,
+    columns: Array.isArray(columns) ? columns : columns(),
     getCoreRowModel: getCoreRowModel(),
   })
 
   return (
-    <div className="rounded-md border bg-white">
+    <div className="w-full rounded-md border bg-white">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

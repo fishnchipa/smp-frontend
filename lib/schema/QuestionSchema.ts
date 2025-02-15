@@ -4,13 +4,14 @@ import { solutionSchema } from "./SolutionSchema";
   
 const difficultyEnum = z.enum(["EASY", "MEDIUM", "HARD"]);
 const moduleEnum = z.enum(["MECHANICS", "ELECTROMAGNETISM", "LIGHT", "ASTROQUANTUM"]);
-const unitEnum = z.enum(["BOOLEAN", "DISPLACEMENT", "VELOCITY", "ACCELERATION", "TIME", "DIRECTION", "TEXT"])
+const unitEnum = z.enum(["BOOLEAN", "DISPLACEMENT", "VELOCITY", "ACCELERATION", "TIME", "DIRECTION", "TEXT", "MASS", "ELECTRONVOLT", "VOLTAGE", "AMPERE", "JOULES", "WAVELENGTH"])
 const tagSchema = z.object({id: z.number(), title: z.string(), name: z.string()});
 export const responseFreeSchema = z.object({
   type: z.literal("RESPONSE_FREE"),
   value: z.object({
     question: z.string(),
     unit: unitEnum,
+    lines: z.number(),
     answer: z.string()
   })
 });
@@ -68,16 +69,18 @@ export type UnitType = z.infer<typeof unitEnum>
 export type FreeAnswerType = z.infer<typeof responseFreeSchema>
 export type MultiAnswerType = z.infer<typeof responseMultipleSchema>
 export type TagType = z.infer<typeof tagSchema>
-export type QuestionDetailtype = z.infer<typeof questionDetailsSchema>
+export type QuestionDetailType = z.infer<typeof questionDetailsSchema>
 
 export function getQuestionSchema() {
   return questionSchema;
 }
 
 export function getQuestionDetailSchema() {
-  return getQuestionSchema().and(z.object({
-    tags: tagSchema.array() 
-  }))
+  return getQuestionSchema().extend({
+    tags: tagSchema.array(),
+    prevId: z.number(),
+    nextId: z.number()
+  })
 }
 
 export function getContentSchema() {

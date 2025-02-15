@@ -1,57 +1,57 @@
-import Filter from "@/components/Filter";
-import { Download, Forward, RotateCcw } from "lucide-react";
-import Progress from "./Progress";
+import { getCollection } from "@/lib/data/collection";
 import Link from "next/link";
-import Composition from "@/components/Composition";
+import SetTable from "./SetTable";
+import { cookies } from "next/headers";
 
 
-export default function Home() {
+type tParams = Promise<{ setId: string }>;
 
-
+export default async function Home({params}: {params: tParams}) {
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get("session"); 
+  const {setId} = await params;
+  const data = await getCollection(setId);
 
   return (
-    <Composition>
-
-      <div className="flex h-full w-full bg-lonely px-5 justify-center overflow-y-scroll">
-        <div className="flex w-full max-w-slide mt-10 text-sm gap-x-5">
-          <div className="flex flex-col gap-y-5">
-            <div className="flex flex-col w-full bg-white rounded-md gap-y-4 p-4 border">
-              <section>
-                <h1 className="font-bold text-3xl">This is my Set</h1> 
-                <span className="text-gray-400">3 questions &bull; Created by 
-                  <Link 
-                    className="text-aqua"
-                    href={"/"}
-                  > Wilson Cao</Link>
-                </span>
-              </section>
-              <hr className="border border-light-aqua"/>
-              <div className="flex justify-between">
-                <h3>Progress</h3>
-                <RotateCcw size={18}/>
-              </div>
-              <Progress />
-              <div className="flex gap-x-3">
-                <button className="bg-aqua text-white text-sm hover:bg-soft-aqua rounded-md h-10 w-36">
-                  Start Virtual Exam
-                </button>
-                <button className="bg-light-aqua text-aqua rounded-md w-10 flex items-center justify-center hover:text-soft-aqua">
-                  <Download size={20}/>
-                </button>
-                <button className="bg-light-aqua text-aqua rounded-md w-10 flex items-center justify-center hover:text-soft-aqua">
-                  <Forward size={20}/>
-                </button>
-              </div>
+    <div className="flex flex-col gap-y-5 h-full w-full bg-lonely px-5 items-center overflow-y-scroll">
+      {data ?
+        <div className="max-w-slide w-full flex flex-col gap-y-5 mt-10">
+          <div className="flex">
+            <div className="flex flex-col w-fit">
+              <h1 className="text-4xl font-bold">{data.name}</h1>
+              <span 
+                className="whitespace-nowrap"
+              >
+                Created By: <Link className="text-aqua hover:underline" href={`/`}>{data.user}</Link>
+              </span>
             </div>
-            <div className="w-full max-w-80">
-              <h2 className="h-9 text-3xl font-bold ">Filters</h2>
-              <Filter />
-            </div>
+            <div className="w-full flex justify-end gap-x-2 py-2 text-sm items-end">   
+              <Link 
+                href={`/view/${setId}/pdf`} 
+                legacyBehavior
+              >
+                <a 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-fit h-fit bg-aqua text-white text-center px-4 py-2 rounded-md hover:bg-soft-aqua"
+                >
+                  View As Pdf
+                </a>
+              </Link>
+              <button 
+                className="w-fit h-fit bg-red-500 text-white text-center px-4 py-2 rounded-md hover:bg-red-400"
+              >
+                Delete Set
+              </button>
+            </div> 
           </div>
-          <div className="w-full">
-          </div>
-        </div> 
-      </div>
-    </Composition>
+          <SetTable data={data} session={sessionCookie}/>
+        </div>
+      : 
+        <div className="flex items-center justify-center w-full text-4xl font-bold pt-10">
+          Set Not Found 
+        </div>
+    }
+    </div>
   )
 }

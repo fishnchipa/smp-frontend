@@ -51,6 +51,42 @@ function Help({status}: {status: UnitType}) {
           <span className="text-black ml-1">Answer</span>
         </span>
       )
+    case "MASS":
+      return (
+        <span className="text-murky">Answer: 
+          <span className="text-black ml-1">?? kg</span>
+        </span>
+      )
+    case "ELECTRONVOLT":
+      return (
+        <span className="text-murky">Answer: 
+          <span className="text-black ml-1">?? eV</span>
+        </span>
+      )
+    case "VOLTAGE":
+      return (
+        <span className="text-murky">Answer: 
+          <span className="text-black ml-1">?? V</span>
+        </span>
+      )
+    case "AMPERE":
+      return (
+        <span className="text-murky">Answer: 
+          <span className="text-black ml-1">?? A</span>
+        </span>
+      )
+    case "JOULES":
+      return (
+        <span className="text-murky">Answer: 
+          <span className="text-black ml-1">?? J</span>
+        </span>
+      )
+    case "WAVELENGTH":
+      return (
+        <span className="text-murky">Answer: 
+          <span className="text-black ml-1">?? nm</span>
+        </span>
+      )
   }
 }
 

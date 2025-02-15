@@ -1,9 +1,22 @@
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
+
 import { validatedWithUserGet } from "../auth/middleware";
 import { getContentSchema, getQuestionDetailSchema, getQuestionSchema } from "../schema/QuestionSchema";
 import { paramsParse } from "../utils";
+import { fetchAction } from "./standard";
 
-export async function getQuestion(questionId: string) {
-  return await validatedWithUserGet(getQuestionDetailSchema(), `question?question=${questionId}`)
+export async function getQuestion(questionId: string, searchParams: URLSearchParams) {
+  return await validatedWithUserGet(
+    getQuestionDetailSchema(), 
+    `question?question=${questionId}&${searchParams.toString()}`
+  )
+}
+
+export async function getSetQuestion(questionId: string, setId: string, searchParams: URLSearchParams) {
+  return await validatedWithUserGet(
+    getQuestionDetailSchema(), 
+    `collection/question?questionId=${questionId}&set=${setId}&${searchParams.toString()}`
+  )
 }
 
 export async function getQuestionList(
@@ -12,6 +25,7 @@ export async function getQuestionList(
   tags?: string | string[], 
   difficulty?: string | string[],
   query?: string | string[],
+  session?: RequestCookie | undefined,
   active = true,
 ) {
   const queryString = new URLSearchParams();
@@ -51,16 +65,20 @@ export async function getQuestionList(
     }
   }
 
+
   if (active) {
-    return await validatedWithUserGet(
+    return await fetchAction(
       getQuestionSchema().array(),
-      `question/list${queryString ? `?${queryString.toString()}` : ""}`
+      `question/list${queryString ? `?${queryString.toString()}` : ""}`,
+      session
     );
   } else {
-    return await validatedWithUserGet(
+    return await fetchAction(
       getQuestionSchema().array(),
-      `question/list/user${queryString ? `?${queryString.toString()}` : ""}`
+      `question/list/user${queryString ? `?${queryString.toString()}` : ""}`,
+      session
     );
+
   }
 
 }

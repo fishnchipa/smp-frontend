@@ -4,8 +4,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 type InitialType = {
-  error: boolean 
-}
+  message: string
+} | null
 
 export async function signIn(initial: InitialType, formData: FormData) {
   const data = Object.fromEntries(formData);
@@ -18,7 +18,7 @@ export async function signIn(initial: InitialType, formData: FormData) {
     body: JSON.stringify(data),
   });
  
-  console.log(initial.error);
+  console.log(initial);
 
   if (response.ok) {
     const { token } = await response.json();
@@ -33,7 +33,7 @@ export async function signIn(initial: InitialType, formData: FormData) {
     redirect("/");
   }
   return {
-    error: true
+    message: "username or password is incorrect"
   }
 }
 

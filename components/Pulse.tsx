@@ -1,10 +1,8 @@
 
-type PulseProps = {
-  theme: "blue" | "green" | "purple"
-}
+export default function Pulse({num}: {num: number}) {
+  const themes = ["blue", "green", "purple"];
+  const theme = themes[num % 3];
 
-export default function Pulse({theme}: PulseProps) {
-  
   if (theme === "green") {
     return (
       <span className="relative flex h-3 w-3">

@@ -13,7 +13,6 @@ interface Payload extends JwtPayload {
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const sessionCookie = request.cookies.get('session');
-
   if (sessionCookie) {
     try {
       if (process.env.SECRET_KEY) {

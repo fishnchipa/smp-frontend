@@ -3,12 +3,15 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import { MoreHorizontal } from "lucide-react"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
 import Link from "next/link"
 import { QuestionType } from "@/lib/schema/QuestionSchema"
 import Difficulty from "../Difficulty"
 import { moduleParse } from "@/lib/utils"
 import { SubmissionType } from "@/lib/schema/SubmissionSchema"
+import { SetRecordType } from "@/lib/schema/SetSchema"
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies"
+import SetDialogue from "../SetDialogue"
+import QuestionLink from "../QuestionLink"
 
 export const historyColumns: ColumnDef<SubmissionType>[] = [
   {
@@ -39,7 +42,30 @@ export const historyColumns: ColumnDef<SubmissionType>[] = [
   },
 ]
 
-export const questionColumns: ColumnDef<QuestionType>[] = [
+export const questionPlaceholder: ColumnDef<QuestionType>[] = [
+  {
+    accessorKey: "id",
+    header: "No.",
+  },
+  {
+    accessorKey: "title",
+    header: "Title",
+  },
+  {
+    accessorKey: "difficulty",
+    header: "Difficulty",
+  },
+  {
+    accessorKey: "module",
+    header: "Module",
+  }
+]
+
+export const questionColumns = (
+  src: string,
+  session?: RequestCookie, 
+  set?: string, 
+): ColumnDef<QuestionType>[] => [
   {
     accessorKey: "id",
     header: "No.",
@@ -48,12 +74,7 @@ export const questionColumns: ColumnDef<QuestionType>[] = [
     accessorKey: "title",
     header: "Title",
     cell: ({row}) => (
-      <Link
-        href={`/question/${row.original.id}`}
-        className="hover:underline"
-      >
-        {row.original.title}
-      </Link>
+      <QuestionLink id={row.original.id} title={row.original.title} href={src}/>
     )
   },
   {
@@ -72,6 +93,48 @@ export const questionColumns: ColumnDef<QuestionType>[] = [
   },
   {
     id: "actions",
+    cell: ({ row }) => {
+      if (!session) { return null }
+
+      return (
+        <SetDialogue setId={set} session={session} questionId={row.original.id} />
+      )
+    }
+  }
+]
+
+
+export const setColumns: ColumnDef<SetRecordType>[] = [
+  {
+    accessorKey: "id",
+    header: "Id",
+    cell: ({row}) => (
+      <Link
+        href={`/set/${row.original.id}`}
+        className="text-blue-500 hover:underline"
+      >
+        {row.original.id}
+      </Link>
+    )
+  },
+  {
+    accessorKey: "name",
+    header: "Name",
+    cell: ({row}) => (
+      <Link
+        href={`/set/${row.original.id}`}
+        className="hover:underline"
+      >
+        {row.original.name}
+      </Link>
+    )
+  },
+  {
+    accessorKey: "count",
+    header: "Total Questions",
+  },
+  {
+    id: "actions",
     cell: () => {
 
       return (
@@ -84,30 +147,7 @@ export const questionColumns: ColumnDef<QuestionType>[] = [
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel> 
               <DropdownMenuItem>
-                <Dialog>
-                  <DialogTrigger 
-                    onClick={e => e.stopPropagation()}
-
-                  >
-                    Add Question to Set 
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px]"
-                    onClick={e => e.stopPropagation()}
-                  >
-                    <DialogHeader>
-                      <DialogTitle>Add Question To Set</DialogTitle>
-                      <DialogDescription>
-                        Make changes to your profile here. Click save when youre done.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div>
-                      Sets not implemented Yet : | 
-                    </div>
-                    <DialogFooter>
-                      
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
+                <button className="text-red-500 font-bold w-full text-start h-full">Delete</button>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -115,6 +155,4 @@ export const questionColumns: ColumnDef<QuestionType>[] = [
       )
     }
   }
-
- 
 ]

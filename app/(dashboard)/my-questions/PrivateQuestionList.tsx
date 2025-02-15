@@ -1,23 +1,28 @@
+"use client"
 
+import { questionColumns, questionPlaceholder } from "@/components/DataTable/Columns";
 import QuestionList from "@/components/QuestionList"
-import { getQuestionList } from "@/lib/data/question";
+import { QuestionListSkeleton } from "@/components/QuestionListSkeleton";
+import { useQuestionList } from "@/hooks/useQuestionList";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
 type PublicQuestionListProps = {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+  searchParams: { [key: string]: string | string[] | undefined }
+  session: RequestCookie | undefined
 }
 
-export default async function PrivateQuestionList({searchParams}: PublicQuestionListProps) {
-  const params = await searchParams;
-  const data = await getQuestionList(
-    params.page, 
-    params.modules, 
-    params.tags, 
-    params.difficulty, 
-    params.query,
-    false
-  );
+export default function PrivateQuestionList({searchParams, session}: PublicQuestionListProps) {
+  const {loading, data} = useQuestionList(searchParams, 300, session, true);
+
+  if (!session) {
+    return (
+      <QuestionListSkeleton columns={questionPlaceholder} />
+    )
+  }
 
   return (
-    <QuestionList data={data}/>
+    <>
+    {loading ? (<QuestionListSkeleton columns={questionColumns("/question", session)} />) : <QuestionList data={data} session={session}/>}
+    </>
   )
 }

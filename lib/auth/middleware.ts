@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 import { ContentType, DifficultyType, ModuleType } from "../schema/QuestionSchema";
 
+
 export async function validatedWithUserGet<S extends z.ZodTypeAny>(
   schema: S,
   api: string, 
@@ -21,7 +22,6 @@ export async function validatedWithUserGet<S extends z.ZodTypeAny>(
     if (response.ok) {
       const invalidatedData = await response.json(); 
       const validatedData = schema.safeParse(invalidatedData); 
-
       if (validatedData.success) {
         return validatedData.data;
       }

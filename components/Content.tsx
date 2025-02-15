@@ -1,5 +1,5 @@
 "use client"
-import { ContentType, QuestionDetailtype } from "@/lib/schema/QuestionSchema"
+import { ContentType, QuestionDetailType } from "@/lib/schema/QuestionSchema"
 import Image from "next/image"
 import Answer from "./Answer"
 import { useForm } from "@/hooks/useForm"
@@ -14,7 +14,7 @@ type ContentProps = {
 }
 
 type ContentMapProps = {
-  data: QuestionDetailtype,
+  data: QuestionDetailType,
   index: number
 }
 function ContentMap({data, index}: ContentMapProps) {
@@ -81,7 +81,10 @@ export default function Content({questionId, data}: ContentProps) {
 
   const solutions = useMemo(() => {
     const responses = data.content.reduce((acc, item, index) => {
-      if (item.type === "RESPONSE_FREE" || item.type === "RESPONSE_MULTIPLE") {
+      if (
+        (item.type === "RESPONSE_FREE" && item.value.unit !== "TEXT") || 
+        item.type === "RESPONSE_MULTIPLE"
+      ) {
         acc[index.toString()] = item.value.answer;
       }
       return acc;

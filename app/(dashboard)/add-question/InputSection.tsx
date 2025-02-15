@@ -103,6 +103,7 @@ function FreeResponse({divRef}: {divRef: React.RefObject<HTMLDivElement | null>}
   const [unit, setUnit] = useState<UnitType>("TEXT")
   const [answer, setAnswer] = useState('')
   const [question, setQuestion] = useState('')
+  const [lines, setLines] = useState('');
 
   const upload = () => {
     if (divRef.current) {
@@ -112,6 +113,7 @@ function FreeResponse({divRef}: {divRef: React.RefObject<HTMLDivElement | null>}
         value: {
           question: safe,
           unit: unit,
+          lines: Number(lines) || 3,
           answer: answer
         }
       }]));
@@ -130,6 +132,21 @@ function FreeResponse({divRef}: {divRef: React.RefObject<HTMLDivElement | null>}
         onInput={(e) => setQuestion(e.currentTarget.innerHTML)}
         ref={divRef}
       >
+      </div>
+
+      <div>
+        <span>Number of lines</span>
+        <input 
+          className="p-2 w-full border min-h-10 max-h-10 overflow-y-scroll border-[#e5e7eb] text-black text-sm" 
+          value={lines}
+          onChange={(e) => {
+            const value = e.currentTarget.value;
+            if (value === '' || !isNaN(Number(value))) {
+              setLines(value);
+            }
+          }}
+        />
+
       </div>
       <div className="flex gap-x-2">
         <div className="w-full basis-2/3">
@@ -153,6 +170,12 @@ function FreeResponse({divRef}: {divRef: React.RefObject<HTMLDivElement | null>}
             <option value="DISPLACEMENT">Displacement</option>
             <option value="VELOCITY">Velocity</option>
             <option value="ACCELERATION">Acceleration</option>
+            <option value="MASS">Mass</option>
+            <option value="ELECTRONVOLT">Electron Volt</option>
+            <option value="VOLTAGE">Voltage</option>
+            <option value="AMPERE">Ampere</option>
+            <option value="JOULES">Joules</option>
+            <option value="WAVELENGTH">Wavelength</option>
           </select>
           {unit === "TEXT" && <span className="text-sm">Note: All answers are accepted as correct</span>}
         </div>

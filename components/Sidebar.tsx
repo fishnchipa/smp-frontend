@@ -6,22 +6,32 @@ import Link from "next/link";
 import NavLink from "./NavLink";
 import { UserType } from "@/lib/schema/UserSchema";
 import { logout } from "@/app/action";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
+import { SetRecordType } from "@/lib/schema/SetSchema";
 
 type SidebarProps = {
-  data: UserType 
+  data: UserType,
+  sets: SetRecordType[]
 }
 
-export default function Sidebar({data}: SidebarProps) {
+export default function Sidebar({data, sets}: SidebarProps) {
 
   return (
     <div className="flex flex-col justify-between h-screen min-w-72 max-w-72 bg-royal text-white">
       <div>
         <div className="p-4">
-          <h1 className="font-bold text-white text-3xl">SolveMyPhysics</h1>
+          <div className="pl-12">
+            <Image 
+              src="/light.png"
+              alt="title"
+              width={130}
+              height={40}
+            />
+          </div>
           <div className="flex items-center gap-x-3 pt-8 pb-4">
             <div className="w-10 aspect-square rounded-full overflow-hidden relative">
               <Image 
-                src="/fate1.jpg" 
+                src="/profile.png" 
                 alt="profile picture"
                 fill
                 className="object-cover"
@@ -74,11 +84,33 @@ export default function Sidebar({data}: SidebarProps) {
         <div className="p-4">
           <div className="flex justify-between items-center">
             <h2 className="font-semibold py-2">Your Sets</h2>
-            <button className="bg-light-royal hover:bg-light-murky rounded-md">
-              <Plus className="text-aqua"/> 
-            </button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <button 
+                  className="bg-light-royal hover:bg-light-murky rounded-md"
+                >
+                  <Plus className="text-aqua"/> 
+                </button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Create A Set</DialogTitle>
+                  <form className="flex flex-col pt-5 pb-2 text-sm items-end gap-y-3">
+                    <label className="w-full">
+                      Name
+                      <input className="ring-0 outline-none rounded-md w-full"/>
+                    </label>
+                    <button 
+                      className="w-fit bg-aqua text-white text-center px-4 py-2 rounded-md hover:bg-soft-aqua"
+                    >
+                      Create
+                    </button>
+                  </form>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
           </div>
-          <Setbar />
+          <Setbar sets={sets}/>
         </div>
       </div>
       <div className="text-sm">
