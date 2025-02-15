@@ -12,14 +12,15 @@ async function Placeholder({
   searchParams
 }: {
   params: tParams
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const { questionId, setId } = await params;
+  const {modules, tags, difficulty, query} = await searchParams;
   const searchQuery = getSearchParams(
-    searchParams.modules, 
-    searchParams.tags, 
-    searchParams.difficulty, 
-    searchParams.query
+    modules, 
+    tags, 
+    difficulty, 
+    query
   );
   const data = await getSetQuestion(questionId, setId, searchQuery);
   const content = await getContent(data.content);
@@ -46,7 +47,7 @@ export default async function Home({
   searchParams
 }: {
   params: tParams
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
 
   return (
