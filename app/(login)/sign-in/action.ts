@@ -28,7 +28,7 @@ export async function signIn(initial: InitialType, formData: FormData) {
       value: token,
       httpOnly: true,
       path: "/",
-      expires: 1000*60*60*24*7
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7) 
     })
 
     redirect("/");
