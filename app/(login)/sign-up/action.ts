@@ -10,7 +10,7 @@ type InitialType =  {
 export async function signUp(initial: InitialType, formData: FormData) {
   const data = Object.fromEntries(formData);
   
-  if (data.password !== data.match) {
+  if (data.password !== data.confirm) {
     return {
       message: "passwords do not match"
     }
