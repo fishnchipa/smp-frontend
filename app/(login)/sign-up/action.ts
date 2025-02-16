@@ -34,7 +34,8 @@ export async function signUp(initial: InitialType, formData: FormData) {
       name: "session",
       value: token,
       httpOnly: true,
-      path: "/"
+      path: "/",
+      expires: 1000*60*60*24*7
     })
     redirect("/");
   }
