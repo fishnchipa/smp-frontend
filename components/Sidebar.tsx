@@ -40,7 +40,7 @@ export default function Sidebar({data, sets}: SidebarProps) {
             <section>
               <Link 
                 className="block font-bold text-xl hover:underline"
-                href={`/profile/${data.username}`}
+                href={`/`}
               >
                 {data.username}
               </Link>
