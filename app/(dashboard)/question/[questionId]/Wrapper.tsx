@@ -112,7 +112,7 @@ export default function Wrapper({data, questionId, content}: WrapperProps) {
                 )}
               >
                 <div 
-                  className="flex flex-col mt-5 text-gray-500"
+                  className="flex flex-col mt-5 text-black"
                 >
                   {content.solution.map((item, index) => (
                     <SolutionParser key={index} solution={item}/>

@@ -65,8 +65,8 @@ export default function QuestionComponent({
       </div>
       <div className="flex justify-center w-full">
         <div className="flex flex-col max-w-page bg-white w-full py-10 px-16 rounded-xl">
-          <div className="flex justify-between">
-            <span className="font-bold text-3xl whitespace-nowrap">
+          <div className="flex justify-between gap-x-2">
+            <span className="font-bold text-3xl ">
               <h1 className="inline">{questionId}. </h1> {data.title}
             </span> 
             <div className="flex gap-x-3 items-center text-sm">
@@ -110,12 +110,12 @@ export default function QuestionComponent({
                 )}
               >
                 <div 
-                  className="flex text-sm gap-x-3 text-gray-500 mb-5"
+                  className="flex flex-wrap text-sm gap-3 text-gray-500 mb-5"
                 >
                   {data.tags.map((item, index) => (
                      <span
                         key={index}
-                        className="flex gap-x-2 h-7 rounded-3xl bg-light-smokey px-3 text-center items-center hover:text-black"
+                        className="flex gap-x-2 h-7 rounded-3xl whitespace-nowrap bg-light-smokey px-3 text-center items-center hover:text-black"
                      >
                       {item.title} 
                     </span>
@@ -132,7 +132,7 @@ export default function QuestionComponent({
                 )}
               >
                 <div 
-                  className="flex flex-col mt-5 text-gray-500"
+                  className="flex flex-col mt-5 text-black"
                 >
                   {content.solution.map((item, index) => (
                     <SolutionParser key={index} solution={item}/>

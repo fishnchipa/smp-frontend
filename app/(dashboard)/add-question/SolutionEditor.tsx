@@ -43,7 +43,7 @@ function SolutionEditorParser({solution}: {solution: SolutionState}) {
 export function SolutionParser({solution}: {solution: SolutionType}) {
   if (solution.type === "TEXT") {
     return (
-      <div dangerouslySetInnerHTML={{__html: solution.value}}>
+      <div dangerouslySetInnerHTML={{__html: solution.value}} className="text-black">
       </div>
     )
   } else if (solution.type === "MATH") {
